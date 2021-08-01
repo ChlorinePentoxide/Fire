@@ -65,7 +65,9 @@ public class App extends RootExtensions
 
     private static void singleSourceParseWrite(String goal) throws IOException {
         String currentGoalDir = goalsConfigDir + "/" + goal;
-        String writefile = currentGoalDir + "/" + goal + ".html";
+        String writefile = outputDir + "/" + goal + ".html";
+        File f = new File(outputDir+"/"+goal);
+        if(!f.exists()) f.mkdirs();
         Vector<String> cache4 = new Vector<>(1,1);
         for(String che:cache3) {
             if(che.startsWith("$(FIRE_SS_ITER)")) {
@@ -77,7 +79,7 @@ public class App extends RootExtensions
                 cache4.addElement(che);
             }
         }
-        beautifyWrite(cache4, writefile);
+        beautifyWrite(cache4, outputDir+"/"+writefile);
     }
 
     private static void sourceParseWrite(String[] langs, String goal) throws IOException {
@@ -90,6 +92,8 @@ public class App extends RootExtensions
                 bufferCache = new Vector<>(1,1);
                 String vergoal = goalfile.getName().replace(".png", "");
                 String writefile= outputDir + "/" + goal + "/" + vergoal + ".html";
+                File f = new File(outputDir+"/"+goal);
+                if(!f.exists()) f.mkdirs();
                 for(int i=0;i<cache.size();i++) {
                     String cacheelement = cache.elementAt(i);
                     if(cacheelement.contains("$(FIRE_GOAL_FILE)")) bufferCache.addElement(cacheelement.replaceAll("$(FIRE_GOAL_NAME)", goalfile.getName()));
