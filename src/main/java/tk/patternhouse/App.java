@@ -84,7 +84,7 @@ public class App extends RootExtensions
     private static void sourceParseWrite(String[] langs, String goal) throws IOException {
         Vector<String> bufferCache;
         System.out.println("Current goal: "+goal);
-        String currentGoalDir = goalsConfigDir + "/" + goal;
+        String currentGoalDir = goalsConfigDir + "/" + goal.toLowerCase();
         System.out.println("Current goaldir: "+currentGoalDir);
         File goalDir = new File(currentGoalDir);
         File[] goalfiles = goalDir.listFiles();
