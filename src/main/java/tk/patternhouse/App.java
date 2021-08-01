@@ -23,7 +23,6 @@ public class App extends RootExtensions
 
     public static void main( String[] args ) throws IOException {
         RootController rc = new RootController(false);
-        ParameterParser pp = new ParameterParser(args);
         registerRootController(rc);
         buildDate = new Date();
 
