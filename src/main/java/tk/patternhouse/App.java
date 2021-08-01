@@ -73,7 +73,7 @@ public class App extends RootExtensions
                 String iterable = che.replace("$(FIRE_SS_ITER)", "").trim();
                 File goalDir = new File(currentGoalDir);
                 File[] goalfiles = goalDir.listFiles();
-                for(File goalfile:goalfiles) cache4.addElement(iterable.replaceAll("$(FIRE_GOAL_FILE)", goalfile.getName()).replaceAll("$(FIRE_GOAL)", goal).replaceAll("$(FIRE_GOAL_NAME", goalfile.getName().substring(0,goalfile.getName().lastIndexOf('.'))));
+                for(File goalfile:goalfiles) cache4.addElement(iterable.replace("$(FIRE_GOAL_FILE)", goalfile.getName()).replace("$(FIRE_GOAL)", goal).replace("$(FIRE_GOAL_NAME", goalfile.getName().substring(0,goalfile.getName().lastIndexOf('.'))));
             } else {
                 cache4.addElement(che);
             }
@@ -84,24 +84,26 @@ public class App extends RootExtensions
     private static void sourceParseWrite(String[] langs, String goal) throws IOException {
         Vector<String> bufferCache;
         System.out.println("Current goal: "+goal);
-        String currentGoalDir = goalsConfigDir + "/" + goal.toLowerCase();
+        String currentGoalDir = goalsConfigDir + "/" + goal.toLowerCase() + "/";
         System.out.println("Current goaldir: "+currentGoalDir);
         File goalDir = new File(currentGoalDir);
         File[] goalfiles = goalDir.listFiles();
+        for(File g:goalfiles) System.out.println(g.getName());
         for(File goalfile:goalfiles) {
-            if(goalfile.getName().endsWith(".png")) {
+            if(goalfile.getName().endsWith(".PNG")) {
                 bufferCache = new Vector<>(1,1);
-                String vergoal = goalfile.getName().replace(".png", "");
+                String vergoal = goalfile.getName().replace(".PNG", "");
                 System.out.println("Current vergoal: "+vergoal);
                 String writefile= outputDir + "/" + goal + "/" + vergoal + ".html";
                 File fl = new File(outputDir+"/"+goal);
                 if(!fl.exists()) fl.mkdirs();
                 for(int i=0;i<cache.size();i++) {
                     String cacheelement = cache.elementAt(i);
-                    if(cacheelement.contains("$(FIRE_GOAL_FILE)")) bufferCache.addElement(cacheelement.replaceAll("$(FIRE_GOAL_FILE)", goalfile.getName()));
-                    else if(cacheelement.contains("$(FIRE_GOAL_NAME)")) bufferCache.addElement(cacheelement.replaceAll("$(FIRE_GOAL_NAME)", vergoal));
-                    else if(cacheelement.contains("$(FIRE_GOAL)")) bufferCache.addElement(cacheelement.replaceAll("$(FIRE_GOAL)", goal));
-                    else if(cacheelement.contains("$(FIRE_SOURCES)")) {
+                    String repl = cacheelement;
+                    if(repl.contains("$(FIRE_GOAL_FILE)")) repl = repl.replace("$(FIRE_GOAL_FILE)", goalfile.getName());
+                    if(repl.contains("$(FIRE_GOAL_NAME)")) repl = repl.replace("$(FIRE_GOAL_NAME)", vergoal);
+                    if(repl.contains("$(FIRE_GOAL)")) repl = repl.replace("$(FIRE_GOAL)", goal.toLowerCase());
+                    if(repl.contains("$(FIRE_SOURCES)")) {
                         for(String lang:langs) {
                             bufferCache.addElement("Source: "+vergoal+"."+lang);
                             bufferCache.addElement("<pre>");
@@ -114,9 +116,9 @@ public class App extends RootExtensions
                             }
                             bufferCache.addElement("</pre>");
                         }
-                    } else {
-                        bufferCache.addElement(cacheelement);
-                    }
+                        repl = "";
+                    } 
+                    bufferCache.addElement(repl);
                 }
                 beautifyWrite(bufferCache, writefile);
             }
@@ -134,7 +136,7 @@ public class App extends RootExtensions
 
     private static Vector<String> basicParse(Vector<String> v) {
         Vector<String> vec = new Vector<>(1,1);
-        for(String st:vec) {
+        for(String st:v) {
             if(st.contains("$(FIRE_BUILD_DATE)")) {
                 vec.addElement(st.replace("$(FIRE_BUILD_DATE)", buildDate.toString()));
             } else {
