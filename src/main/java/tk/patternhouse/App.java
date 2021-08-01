@@ -92,8 +92,8 @@ public class App extends RootExtensions
                 bufferCache = new Vector<>(1,1);
                 String vergoal = goalfile.getName().replace(".png", "");
                 String writefile= outputDir + "/" + goal + "/" + vergoal + ".html";
-                File f = new File(outputDir+"/"+goal);
-                if(!f.exists()) f.mkdirs();
+                File fl = new File(outputDir+"/"+goal);
+                if(!fl.exists()) fl.mkdirs();
                 for(int i=0;i<cache.size();i++) {
                     String cacheelement = cache.elementAt(i);
                     if(cacheelement.contains("$(FIRE_GOAL_FILE)")) bufferCache.addElement(cacheelement.replaceAll("$(FIRE_GOAL_NAME)", goalfile.getName()));
