@@ -84,13 +84,16 @@ public class App extends RootExtensions
 
     private static void sourceParseWrite(String[] langs, String goal) throws IOException {
         Vector<String> bufferCache;
+        System.out.println("Current goal: "+goal);
         String currentGoalDir = goalsConfigDir + "/" + goal;
+        System.out.println("Current goaldir: "+currentGoalDir);
         File goalDir = new File(currentGoalDir);
         File[] goalfiles = goalDir.listFiles();
         for(File goalfile:goalfiles) {
             if(goalfile.getName().endsWith(".png")) {
                 bufferCache = new Vector<>(1,1);
                 String vergoal = goalfile.getName().replace(".png", "");
+                System.out.println("Current vergoal: "+vergoal);
                 String writefile= outputDir + "/" + goal + "/" + vergoal + ".html";
                 File fl = new File(outputDir+"/"+goal);
                 if(!fl.exists()) fl.mkdirs();
