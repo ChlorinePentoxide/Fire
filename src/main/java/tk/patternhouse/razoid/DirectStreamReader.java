@@ -22,9 +22,9 @@ public class DirectStreamReader {
         Vector<String> vector = new Vector<>(1,1);
         BufferedReader br = new BufferedReader(new FileReader(file));
         while(true) {
-            String st = br.readLine().trim();
+            String st = br.readLine();
             if(st == null) break;
-            vector.addElement(st);
+            vector.addElement(st.trim());
         }
         br.close();
         return vector;
