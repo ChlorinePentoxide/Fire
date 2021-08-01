@@ -55,7 +55,7 @@ public class App extends RootExtensions
 
         // The Difficult Part
         final String goals[] = new String[] { "Alphabetic", "Numeric", "Pyramid", "Series", "Spiral", "String", "Symbol", "Wave" };
-        final String lang[] = new String[] { ".c", ".cpp", ".cs", ".java", ".py" };
+        final String lang[] = new String[] { "c", "cpp", "cs", "java", "py" };
         for(String goal:goals) {
             sourceParseWrite(lang, goal);
             singleSourceParseWrite(goal);
@@ -96,9 +96,9 @@ public class App extends RootExtensions
                     else if(cacheelement.contains("$(FIRE_GOAL_NAME)")) bufferCache.addElement(cacheelement.replaceAll("$(FIRE_GOAL_NAME)", vergoal));
                     else if(cacheelement.contains("$(FIRE_SOURCES)")) {
                         for(String lang:langs) {
-                            bufferCache.addElement("Source: "+vergoal+lang);
+                            bufferCache.addElement("Source: "+vergoal+"."+lang);
                             bufferCache.addElement("<pre>");
-                            File f = new File(langSourceDir + "/" + goal + "/" vergoal + lang);
+                            File f = new File(langSourceDir + "/" + lang + "/" + goal + "/" vergoal +"."+lang);
                             if(!f.exists()) {
                                 bufferCache.addElement("We are currently working on this source. Check back later.");
                             } else {
