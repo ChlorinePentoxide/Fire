@@ -96,7 +96,7 @@ public class App extends RootExtensions
                 if(!fl.exists()) fl.mkdirs();
                 for(int i=0;i<cache.size();i++) {
                     String cacheelement = cache.elementAt(i);
-                    if(cacheelement.contains("$(FIRE_GOAL_FILE)")) bufferCache.addElement(cacheelement.replaceAll("$(FIRE_GOAL_NAME)", goalfile.getName()));
+                    if(cacheelement.contains("$(FIRE_GOAL_FILE)")) bufferCache.addElement(cacheelement.replaceAll("$(FIRE_GOAL_FILE)", goalfile.getName()));
                     else if(cacheelement.contains("$(FIRE_GOAL_NAME)")) bufferCache.addElement(cacheelement.replaceAll("$(FIRE_GOAL_NAME)", vergoal));
                     else if(cacheelement.contains("$(FIRE_GOAL)")) bufferCache.addElement(cacheelement.replaceAll("$(FIRE_GOAL)", goal));
                     else if(cacheelement.contains("$(FIRE_SOURCES)")) {
