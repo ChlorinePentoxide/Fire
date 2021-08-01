@@ -22,7 +22,7 @@ public class DirectStreamReader {
         Vector<String> vector = new Vector<>(1,1);
         BufferedReader br = new BufferedReader(new FileReader(file));
         while(true) {
-            String st = br.readLine();
+            String st = br.readLine().trim();
             if(st == null) break;
             vector.addElement(st);
         }

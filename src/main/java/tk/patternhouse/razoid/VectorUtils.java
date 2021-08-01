@@ -17,4 +17,10 @@ public class VectorUtils {
     public static <T> void convertVector(Vector<T> vector, T[] array) {
         for(int i=0;i<vector.size();i++) array[i] = vector.elementAt(i);
     }
+
+    public static Vector<String> clone(Vector<String> v) {
+        Vector<String> vec = new Vector<>(1,1);
+        for(int i=0;i<v.size();i++) vec.addElement(v.elementAt(i));
+        return vec;
+    }
 }

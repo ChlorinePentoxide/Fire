@@ -12,6 +12,8 @@ public class ParameterParser {
 
     public ParameterParser(String[] a) {
         args = a;
+        flags = new Vector<>(1,1);
+        parametricFlags = new Vector<>(1,1);
         parse();
     }
 
@@ -22,18 +24,18 @@ public class ParameterParser {
                 args[i] = "";
             }
         }
-        String parameter = "";
+        if(args[args.length-1].startsWith("--")) flags.addElement(args[args.length-1]);
         for(String st:args) {
-            if(st.startsWith("--")) {
-                parametricFlags.addElement(parameter);
-                parameter = "";
-            } else if(st.equals("")) {
-                continue;
-            } else {
-                parameter += st;
-            }
+            if(!st.equals("")) parametricFlags.addElement(st);
         }
 
     }
 
+    public Vector<String> getFlags() {
+        return flags;
+    }
+
+    public Vector<String> getParametricFlags() {
+        return parametricFlags;
+    }
 }
