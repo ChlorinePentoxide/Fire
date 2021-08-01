@@ -98,6 +98,7 @@ public class App extends RootExtensions
                     String cacheelement = cache.elementAt(i);
                     if(cacheelement.contains("$(FIRE_GOAL_FILE)")) bufferCache.addElement(cacheelement.replaceAll("$(FIRE_GOAL_NAME)", goalfile.getName()));
                     else if(cacheelement.contains("$(FIRE_GOAL_NAME)")) bufferCache.addElement(cacheelement.replaceAll("$(FIRE_GOAL_NAME)", vergoal));
+                    else if(cacheelement.contains("$(FIRE_GOAL)")) bufferCache.addElement(cacheelement.replaceAll("$(FIRE_GOAL)", goal));
                     else if(cacheelement.contains("$(FIRE_SOURCES)")) {
                         for(String lang:langs) {
                             bufferCache.addElement("Source: "+vergoal+"."+lang);
