@@ -98,7 +98,7 @@ public class App extends RootExtensions
                         for(String lang:langs) {
                             bufferCache.addElement("Source: "+vergoal+lang);
                             bufferCache.addElement("<pre>");
-                            File f = new File(langSourceDir + "/" + vergoal+lang);
+                            File f = new File(langSourceDir + "/" + goal + "/" vergoal + lang);
                             if(!f.exists()) {
                                 bufferCache.addElement("We are currently working on this source. Check back later.");
                             } else {
