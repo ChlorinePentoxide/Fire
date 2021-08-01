@@ -53,7 +53,7 @@ public class App extends RootExtensions
         cache3 = dsr.read();
 
         // The Difficult Part
-        final String goals[] = new String[] { "Alphabetic", "Numeric", "Pyramid", "Series", "Spiral", "String", "Symbol", "Wave" };
+        final String goals[] = new String[] { "alphabetic", "numeric", "pyramid", "series", "spiral", "string", "symbol", "wave" };
         final String lang[] = new String[] { "c", "cpp", "cs", "java", "py" };
         for(String goal:goals) {
             sourceParseWrite(lang, goal);
@@ -63,7 +63,7 @@ public class App extends RootExtensions
     }
 
     private static void singleSourceParseWrite(String goal) throws IOException {
-        String currentGoalDir = goalsConfigDir + "/" + goal;
+        String currentGoalDir = goalsConfigDir + "/" + goal.toLowerCase();
         String writefile = outputDir + "/" + goal + ".html";
         File f = new File(outputDir+"/"+goal);
         if(!f.exists()) f.mkdirs();
@@ -73,12 +73,12 @@ public class App extends RootExtensions
                 String iterable = che.replace("$(FIRE_SS_ITER)", "").trim();
                 File goalDir = new File(currentGoalDir);
                 File[] goalfiles = goalDir.listFiles();
-                for(File goalfile:goalfiles) cache4.addElement(iterable.replace("$(FIRE_GOAL_FILE)", goalfile.getName()).replace("$(FIRE_GOAL)", goal).replace("$(FIRE_GOAL_NAME", goalfile.getName().substring(0,goalfile.getName().lastIndexOf('.'))));
+                for(File goalfile:goalfiles) cache4.addElement(iterable.replace("$(FIRE_GOAL_FILE)", goalfile.getName()).replace("$(FIRE_GOAL)", goal.toLowerCase()).replace("$(FIRE_GOAL_NAME)", goalfile.getName().substring(0,goalfile.getName().lastIndexOf('.'))));
             } else {
                 cache4.addElement(che);
             }
         }
-        beautifyWrite(cache4, outputDir+"/"+writefile);
+        beautifyWrite(cache4, writefile);
     }
 
     private static void sourceParseWrite(String[] langs, String goal) throws IOException {
@@ -88,12 +88,10 @@ public class App extends RootExtensions
         System.out.println("Current goaldir: "+currentGoalDir);
         File goalDir = new File(currentGoalDir);
         File[] goalfiles = goalDir.listFiles();
-        for(File g:goalfiles) System.out.println(g.getName());
         for(File goalfile:goalfiles) {
             if(goalfile.getName().endsWith(".PNG")) {
                 bufferCache = new Vector<>(1,1);
                 String vergoal = goalfile.getName().replace(".PNG", "");
-                System.out.println("Current vergoal: "+vergoal);
                 String writefile= outputDir + "/" + goal + "/" + vergoal + ".html";
                 File fl = new File(outputDir+"/"+goal);
                 if(!fl.exists()) fl.mkdirs();
