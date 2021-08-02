@@ -15,9 +15,9 @@ public class App extends RootExtensions
     private static Vector<String> source = new Vector<>(1,1);
     private static Vector<String> footer = new Vector<>(1,1);
 
-    static final String goalsConfigDir = "firerepo";
-    static final String langSourceDir = "firesource";
-    static final String outputDir = "basegen";
+    private static final String goalsConfigDir = "firerepo";
+    private static final String langSourceDir = "firesource";
+    private static final String outputDir = "basegen";
 
     static Date buildDate;
 
