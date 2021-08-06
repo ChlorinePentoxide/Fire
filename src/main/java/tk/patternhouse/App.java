@@ -19,43 +19,81 @@ public class App extends RootExtensions
     private static final String langSourceDir = "firesource";
     private static final String outputDir = "basegen";
 
-    static Date buildDate;
+    private static Date buildDate;
+    private static String version = "1.03beta12";
 
     public static void main( String[] args ) throws IOException {
         RootController rc = new RootController(false);
         registerRootController(rc);
         buildDate = new Date();
-
+        
+        System.out.print("RAZOID: Preparing PatternHouse FIRE Version "+version+" ... ");
+        
+        System.out.println("DONE.");
+        
         // Get BASE templates
 
+        System.out.print("FIRE: Prepating DirectStreams ... ");
+        
         DirectStreamReader dsr;
         DirectStreamWriter dsw;
-
+        
+        System.out.println("DONE.");
+        
+        System.out.print("FIRE: Reading header templates ... ");
+        
         // Get Header template
         dsr = new DirectStreamReader("header.firetemplate");
         header = basicParse(dsr.read());
+        
+        System.out.println("DONE.");
+        
+        System.out.print("FIRE: Reading footer templates ... ");
 
         // Get Footer template
         dsr = new DirectStreamReader("footer.firetemplate");
         footer = basicParse(dsr.read());
+        
+        System.out.println("DONE.");
+        
+        System.out.print("FIRE: Reading frontpage templates ... ");
 
         // Create BASE frontpage
         dsr = new DirectStreamReader("frontpage.firetemplate");
+        
+        System.out.println("DONE.");
+        
+        System.out.print("FIRE: Writing frontpages ... ");
+        
         dsw = new DirectStreamWriter(outputDir+"/index.html");
         dsw.write(basicParse(dsr.read()));
+        
+        System.out.println("DONE.");
+        
+        System.out.print("FIRE: Reading source files ... ");
 
         // Get Source templates
         dsr = new DirectStreamReader("source.firetemplate");
         cache = dsr.read();
+        
+        System.out.println("DONE.");
+        
+        System.out.print("FIRE: Reading singlesource files ... ");
 
         // Get Source templates
         dsr = new DirectStreamReader("singlesource.firetemplate");
         cache3 = dsr.read();
-
+        
+        System.out.println("DONE.");
+        
+        
+        System.out.println("FIRE: Executing parsing jobs ... ");
+        
         // The Difficult Part
         final String goals[] = new String[] { "alphabetic", "numeric", "pyramid", "series", "spiral", "string", "symbol", "wave" };
         final String lang[] = new String[] { "c", "cpp", "cs", "java", "py" };
         for(String goal:goals) {
+            System.out.println("FIRE : Executing Job \""+goal+"\" ... ");
             sourceParseWrite(lang, goal);
             singleSourceParseWrite(goal);
         }
@@ -83,9 +121,9 @@ public class App extends RootExtensions
 
     private static void sourceParseWrite(String[] langs, String goal) throws IOException {
         Vector<String> bufferCache;
-        System.out.println("Current goal: "+goal);
+        System.out.println("FIRE::SPW : Current Job: "+goal);
         String currentGoalDir = goalsConfigDir + "/" + goal.toLowerCase() + "/";
-        System.out.println("Current goaldir: "+currentGoalDir);
+        System.out.println("FIRE::SPW : Current Job Directory: "+currentGoalDir);
         File goalDir = new File(currentGoalDir);
         File[] goalfiles = goalDir.listFiles();
         for(File goalfile:goalfiles) {
@@ -93,6 +131,7 @@ public class App extends RootExtensions
                 bufferCache = new Vector<>(1,1);
                 String vergoal = goalfile.getName().replace(".PNG", "");
                 String writefile= outputDir + "/" + goal + "/" + vergoal + ".html";
+                System.out.println("FIRE::SPW : Current Write File : "+writefile);
                 File fl = new File(outputDir+"/"+goal);
                 if(!fl.exists()) fl.mkdirs();
                 for(int i=0;i<cache.size();i++) {
@@ -106,9 +145,12 @@ public class App extends RootExtensions
                             bufferCache.addElement("Source: "+vergoal+"."+lang);
                             bufferCache.addElement("<pre>");
                             File f = new File(langSourceDir + "/" + lang + "/" + goal + "/"+ vergoal +"."+lang);
+                            System.out.print("FIRE::SPW (GOAL \""+goal+"\") : Scanning \""+lang+"\" source file \""+f.getPath()+"\" ... ");
                             if(!f.exists()) {
+                                System.out.println("ABSENT");
                                 bufferCache.addElement("We are currently working on this source. Check back later.");
                             } else {
+                                System.out.println("FOUND");
                                 Vector<String> cache2 = (new DirectStreamReader(f)).read();
                                 for(String st:cache2)  bufferCache.addElement(st);
                             }
