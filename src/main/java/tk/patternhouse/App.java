@@ -20,7 +20,7 @@ public class App extends RootExtensions
     private static final String outputDir = "basegen";
 
     private static Date buildDate;
-    private static String version = "1.03beta12";
+    private static String version = "1.04RC1";
 
     public static void main( String[] args ) throws IOException {
         RootController rc = new RootController(false);
@@ -120,7 +120,6 @@ public class App extends RootExtensions
     }
 
     private static void sourceParseWrite(String[] langs, String goal) throws IOException {
-        Vector<String> bufferCache;
         System.out.println("FIRE::SPW : Current Job: "+goal);
         String currentGoalDir = goalsConfigDir + "/" + goal.toLowerCase() + "/";
         System.out.println("FIRE::SPW : Current Job Directory: "+currentGoalDir);
@@ -128,41 +127,51 @@ public class App extends RootExtensions
         File[] goalfiles = goalDir.listFiles();
         for(File goalfile:goalfiles) {
             if(goalfile.getName().endsWith(".PNG")) {
-                bufferCache = new Vector<>(1,1);
-                String vergoal = goalfile.getName().replace(".PNG", "");
-                String writefile= outputDir + "/" + goal + "/" + vergoal + ".html";
-                System.out.println("FIRE::SPW : Current Write File : "+writefile);
-                File fl = new File(outputDir+"/"+goal);
-                if(!fl.exists()) fl.mkdirs();
-                for(int i=0;i<cache.size();i++) {
-                    String cacheelement = cache.elementAt(i);
-                    String repl = cacheelement;
-                    if(repl.contains("$(FIRE_GOAL_FILE)")) repl = repl.replace("$(FIRE_GOAL_FILE)", goalfile.getName());
-                    if(repl.contains("$(FIRE_GOAL_NAME)")) repl = repl.replace("$(FIRE_GOAL_NAME)", vergoal);
-                    if(repl.contains("$(FIRE_GOAL)")) repl = repl.replace("$(FIRE_GOAL)", goal.toLowerCase());
-                    if(repl.contains("$(FIRE_SOURCES)")) {
-                        for(String lang:langs) {
-                            bufferCache.addElement("Source: "+vergoal+"."+lang);
-                            bufferCache.addElement("<pre>");
-                            File f = new File(langSourceDir + "/" + lang + "/" + goal + "/"+ vergoal +"."+lang);
-                            System.out.print("FIRE::SPW (GOAL \""+goal+"\") : Scanning \""+lang+"\" source file \""+f.getPath()+"\" ... ");
-                            if(!f.exists()) {
-                                System.out.println("ABSENT");
-                                bufferCache.addElement("We are currently working on this source. Check back later.");
-                            } else {
-                                System.out.println("FOUND");
-                                Vector<String> cache2 = (new DirectStreamReader(f)).read();
-                                for(String st:cache2)  bufferCache.addElement(st);
-                            }
-                            bufferCache.addElement("</pre>");
-                        }
-                        repl = "";
-                    } 
-                    bufferCache.addElement(repl);
-                }
-                beautifyWrite(bufferCache, writefile);
+                parseForLanguage(".PNG", goalfile, goal, langs);
+            }
+            if(goalfile.getName().endsWith(".png")) {
+                parseForLanguage(".png", goalfile, goal, langs);
+            }
+            if(goalfile.getName().endsWith(".jpg")) {
+                parseForLanguage(".jpg", goalfile, goal, langs);
             }
         }
+    }
+    
+    private static void parseForLanguage(String extension, File goalfile, String goal, String[] langs) throws IOException {
+        Vector<String> bufferCache = new Vector<>(1,1);
+        String vergoal = goalfile.getName().replace(extension, "");
+        String writefile= outputDir + "/" + goal + "/" + vergoal + ".html";
+        System.out.println("FIRE::SPW : Current Write File : "+writefile);
+        File fl = new File(outputDir+"/"+goal);
+        if(!fl.exists()) fl.mkdirs();
+        for(int i=0;i<cache.size();i++) {
+            String cacheelement = cache.elementAt(i);
+            String repl = cacheelement;
+            if(repl.contains("$(FIRE_GOAL_FILE)")) repl = repl.replace("$(FIRE_GOAL_FILE)", goalfile.getName());
+            if(repl.contains("$(FIRE_GOAL_NAME)")) repl = repl.replace("$(FIRE_GOAL_NAME)", vergoal);
+            if(repl.contains("$(FIRE_GOAL)")) repl = repl.replace("$(FIRE_GOAL)", goal.toLowerCase());
+            if(repl.contains("$(FIRE_SOURCES)")) {
+                for(String lang:langs) {
+                    bufferCache.addElement("Source: "+vergoal+"."+lang);
+                    bufferCache.addElement("<pre>");
+                    File f = new File(langSourceDir + "/" + lang + "/" + goal + "/"+ vergoal +"."+lang);
+                    System.out.print("FIRE::SPW (GOAL \""+goal+"\") : Scanning \""+lang+"\" source file \""+f.getPath()+"\" ... ");
+                    if(!f.exists()) {
+                        System.out.println("ABSENT");
+                        bufferCache.addElement("We are currently working on this source. Check back later.");
+                    } else {
+                        System.out.println("FOUND");
+                        Vector<String> cache2 = (new DirectStreamReader(f)).read();
+                        for(String st:cache2)  bufferCache.addElement(st);
+                    }
+                    bufferCache.addElement("</pre>");
+                }
+                repl = "";
+            } 
+            bufferCache.addElement(repl);
+        }
+        beautifyWrite(bufferCache, writefile);
     }
 
     private static void beautifyWrite(Vector<String> bufferCache, String s) throws IOException {
@@ -177,11 +186,14 @@ public class App extends RootExtensions
     private static Vector<String> basicParse(Vector<String> v) {
         Vector<String> vec = new Vector<>(1,1);
         for(String st:v) {
+            String string = st;
             if(st.contains("$(FIRE_BUILD_DATE)")) {
-                vec.addElement(st.replace("$(FIRE_BUILD_DATE)", buildDate.toString()));
-            } else {
-                vec.addElement(st);
+                string = string.replace("$(FIRE_BUILD_DATE)", buildDate.toString());
+            } 
+            if(st.contains("$(FIRE_VERSION)")) { 
+                string = string.replace("$(FIRE_VERSION)", version);
             }
+            vec.addElement(string);
         }
         return vec;
     }
