@@ -19,7 +19,7 @@ public class App extends RootExtensions
     private static final String outputDir = "basegen";
 
     private static Date buildDate;
-    private static String version = "1.04RC1";
+    private static String version = "1.05c-12";
 
     public static void main( String[] args ) throws IOException {
         RootController rc = new RootController(false);
