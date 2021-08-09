@@ -109,7 +109,8 @@ public class App extends RootExtensions
             if(che.startsWith("$(FIRE_SS_ITER)")) {
                 String iterable = che.replace("$(FIRE_SS_ITER)", "").trim();
                 File goalDir = new File(currentGoalDir);
-                File[] goalfiles = Arrays.sort(goalDir.listFiles());
+                File[] goalfiles = goalDir.listFiles();
+                Arrays.sort(goalfiles);
                 for(File goalfile:goalfiles) cache4.addElement(iterable.replace("$(FIRE_GOAL_FILE)", goalfile.getName()).replace("$(FIRE_GOAL)", goal.toLowerCase()).replace("$(FIRE_GOAL_NAME)", goalfile.getName().substring(0,goalfile.getName().lastIndexOf('.'))));
             } else {
                 cache4.addElement(che);
@@ -123,7 +124,8 @@ public class App extends RootExtensions
         String currentGoalDir = goalsConfigDir + "/" + goal.toLowerCase() + "/";
         System.out.println("FIRE::SPW : Current Job Directory: "+currentGoalDir);
         File goalDir = new File(currentGoalDir);
-        File[] goalfiles = Arrays.sort(goalDir.listFiles());
+        File[] goalfiles = goalDir.listFiles();
+        Arrays.sort(goalfiles);
         for(File goalfile:goalfiles) {
             if(goalfile.getName().endsWith(".PNG")) {
                 parseForLanguage(".PNG", goalfile, goal, langs);
