@@ -166,7 +166,7 @@ public class App extends RootExtensions
                         Vector<String> cache2 = (new DirectStreamReader(f)).read();
                         for(String st:cache2)  bufferCache.addElement(st);
                     }
-                    bufferCache.addElement("</pre>");
+                    bufferCache.addElement("</pre><br>");
                 }
                 repl = "";
             } 
