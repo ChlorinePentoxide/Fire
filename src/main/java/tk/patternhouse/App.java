@@ -155,12 +155,12 @@ public class App extends RootExtensions
             if(repl.contains("$(FIRE_SOURCES)")) {
                 for(String lang:langs) {
                     bufferCache.addElement("Source: "+vergoal+"."+lang);
-                    bufferCache.addElement("<pre class=\"prettyprint\">");
+                    bufferCache.addElement("<pre class=\"prettyprint\" style=\"overflow-wrap: break-word;\">");
                     File f = new File(langSourceDir + "/" + lang + "/" + goal + "/"+ vergoal +"."+lang);
                     System.out.print("FIRE::SPW (GOAL \""+goal+"\") : Scanning \""+lang+"\" source file \""+f.getPath()+"\" ... ");
                     if(!f.exists()) {
                         System.out.println("ABSENT");
-                        bufferCache.addElement("We are currently working on this source. Check back later.");
+                        bufferCache.addElement("// We are currently working on this source. Check back later.");
                     } else {
                         System.out.println("FOUND");
                         Vector<String> cache2 = (new DirectStreamReader(f)).read();
