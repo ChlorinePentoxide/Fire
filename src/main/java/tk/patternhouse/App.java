@@ -155,7 +155,7 @@ public class App extends RootExtensions
             if(repl.contains("$(FIRE_SOURCES)")) {
                 for(String lang:langs) {
                     bufferCache.addElement("Source: "+vergoal+"."+lang);
-                    bufferCache.addElement("<pre class=\"prettyprint\" style=\"overflow-wrap: break-word;\">");
+                    bufferCache.addElement("<pre class=\"prettyprint p-2\" style=\"overflow-wrap: break-word;\">");
                     File f = new File(langSourceDir + "/" + lang + "/" + goal + "/"+ vergoal +"."+lang);
                     System.out.print("FIRE::SPW (GOAL \""+goal+"\") : Scanning \""+lang+"\" source file \""+f.getPath()+"\" ... ");
                     if(!f.exists()) {
