@@ -46,7 +46,7 @@ public class Writers {
                 cache4.addElement(che);
             }
         }
-        basicAppendWrite(cache4, writefile);
+        basicAppendWrite(commonParse(cache4), writefile);
     }
 
     private static void sourceParseWrite(String[] langs, String goal) {
